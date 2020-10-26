@@ -11,17 +11,10 @@ var textSequence = [];
 var selectionCount = 0;
 var missingFontsCount = 0;
 
-
 // Focus input field
 textPatternInput.focus();
 
-// //on load function
-// document.addEventListener("DOMContentLoaded", function() {
-//     validation();
-// });
-
 window.onmessage = async event => {
-    console.log('window.onmessage');
     const message = event.data.pluginMessage
     if (message.type === 'textNodes') {
         selectionCount = message.textNodes.length;
@@ -131,7 +124,6 @@ function createSequence() {
             if (numberLengthDifference > 0) {
                 newNumber = '0'.repeat(numberLengthDifference) + newNumber;
             }
-            console.log(newNumber);
             newText[i] = textPatternInput.value.replace(
                 number,
                 newNumber
@@ -149,6 +141,7 @@ function createSequence() {
     return newText;
 }
 
+// Comms to plugin
 function updateText() {
     parent.postMessage({ pluginMessage: { 
         'type': 'update-text', 
