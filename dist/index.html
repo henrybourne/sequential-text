@@ -2067,6 +2067,12 @@
           height: 100%;
           text-align: center; }
 
+        .icon--orientation-rows {
+          background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIxLjcwNzEgMjBMMTguMzUzNiAxNi42NDY0TDE3LjY0NjUgMTcuMzUzNkwxOS43OTI5IDE5LjVIMTAuNUwxMC41IDIwLjVIMTkuNzkyOUwxNy42NDY1IDIyLjY0NjRMMTguMzUzNiAyMy4zNTM2TDIxLjcwNzEgMjBaIiBmaWxsPSJibGFjayIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KPHBhdGggZD0iTTEwLjUgMTUuNUwyMS41IDE1LjVWMTQuNUwxMC41IDE0LjVMMTAuNSAxNS41WiIgZmlsbD0iYmxhY2siIGZpbGwtb3BhY2l0eT0iMC44Ii8+CjxwYXRoIGQ9Ik0xMC41IDEwLjVMMjEuNSAxMC41VjkuNUwxMC41IDkuNUwxMC41IDEwLjVaIiBmaWxsPSJibGFjayIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KPC9zdmc+Cg==); }
+
+        .icon--orientation-columns {
+          background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE5Ljk5OTkgMjAuNzA3MUwyMy4zNTM1IDE3LjM1MzZMMjIuNjQ2NCAxNi42NDY0TDIwLjQ5OTkgMTguNzkyOVY5LjVIMTkuNDk5OVYxOC43OTI5TDE3LjM1MzQgMTYuNjQ2NEwxNi42NDYzIDE3LjM1MzZMMTkuOTk5OSAyMC43MDcxWiIgZmlsbD0iYmxhY2siIGZpbGwtb3BhY2l0eT0iMC44Ii8+CjxwYXRoIGQ9Ik05LjQ5OTg4IDkuNVYyMC41SDEwLjQ5OTlWOS41SDkuNDk5ODhaIiBmaWxsPSJibGFjayIgZmlsbC1vcGFjaXR5PSIwLjgiLz4KPHBhdGggZD0iTTE0LjQ5OTkgOS41VjIwLjVIMTUuNDk5OVY5LjVIMTQuNDk5OVoiIGZpbGw9ImJsYWNrIiBmaWxsLW9wYWNpdHk9IjAuOCIvPgo8L3N2Zz4K); }
+
         </style> <!-- Your Styles -->
     </head>
     <body>
@@ -2079,12 +2085,17 @@
     <div id="mainBody" class="p-xxsmall">
 
         <!-- Text Pattern -->   
-        <div class="input p-xxsmall">
-            <input id="textPattern" type="input" class="row input__field" placeholder="Text Pattern">
+        <div class="flex row p-xxsmall">
+            <div class="input flex-grow mr-xxsmall">
+                <input id="textPattern" type="input" class="row input__field" placeholder="Text Pattern">
+            </div>
+            <div id="orientationRowsButton" class="icon-button icon-button--selected">
+                <div class="icon icon--orientation-rows"></div>
+            </div>
+            <div id="orientationColumnsButton" class="icon-button">
+                <div class="icon icon--orientation-columns"></div>
+            </div>
         </div>
-        <!-- <div class="type descriptor p-xxsmall">
-            Use <strong>{{n}}</strong> to identify the number or range to use to create the sequence. For example <strong>Person {{1}}</strong> or <strong>Faders {{1-12}}</strong>.
-        </div> -->
 
         <!-- Preview -->
         <div class="section-title">Preview</div>
@@ -2577,6 +2588,8 @@
     const updateTextButton              = document.querySelector('#updateText');
     const cancelButton                  = document.querySelector('#cancel');
     const textPatternInput              = document.querySelector('#textPattern');
+    const orientationRowsButton         = document.querySelector('#orientationRowsButton');
+    const orientationColumnsButton      = document.querySelector('#orientationColumnsButton');
     const preview                       = document.querySelector('#preview');
     const missingFontsBody              = document.querySelector('#missingFontsBody');
     const selectMissingFontNodesButton  = document.querySelector('#selectMissingFontNodes');
@@ -2584,6 +2597,7 @@
     var textSequence = [];
     var selectionCount = 0;
     var missingFontsCount = 0;
+    var sequenceOrientation = 'rows';
 
     // Focus input field
     textPatternInput.focus();
@@ -2599,9 +2613,23 @@
 
     //event listeners
     textPatternInput.oninput = () => { validation(); }
+    orientationRowsButton.onclick = () => { setOrientationRows(); }
+    orientationColumnsButton.onclick = () => { setOrientationColumns(); }
     updateTextButton.onclick = () => { updateText(); }
     selectMissingFontNodesButton.onclick = () => { selectMissingFontNodes(); }
     cancelButton.onclick = () => { cancel(); }
+
+    // Sequence Orientation
+    function setOrientationRows() {
+        orientationRowsButton.classList.add('icon-button--selected');
+        orientationColumnsButton.classList.remove('icon-button--selected');
+        sequenceOrientation = 'rows';
+    }
+    function setOrientationColumns() {
+        orientationRowsButton.classList.remove('icon-button--selected');
+        orientationColumnsButton.classList.add('icon-button--selected');
+        sequenceOrientation = 'columns';
+    }
 
     //form validation
     function validation() {
@@ -2717,9 +2745,11 @@
 
     // Comms to plugin
     function updateText() {
+        console.log("UPDATE");
         parent.postMessage({ pluginMessage: { 
             'type': 'update-text', 
-            'sequence': textSequence
+            'sequence': textSequence,
+            'orientation': sequenceOrientation
         } }, '*');
     }
 
@@ -2728,6 +2758,7 @@
     }
 
     function cancel() {
+        console.log("CANCEL");
         parent.postMessage({ pluginMessage: { 'type': 'cancel' } }, '*');
     }
     </script>

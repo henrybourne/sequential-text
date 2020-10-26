@@ -19,32 +19,48 @@ figma.on('selectionchange', () => {
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     if (msg.type === 'update-text') {
         // Load fonts
-        let results = yield Promise.all(fonts.map((font) => {
+        yield Promise.all(fonts.map((font) => {
             return figma.loadFontAsync(font);
         }));
-        // Sort text nodes
-        textNodes.sort(function (a, b) {
-            if (a.y > b.y)
-                return 1;
-            if (a.y < b.y)
-                return -1;
-            if (a.x > b.x)
-                return 1;
-            if (a.x < b.x)
-                return -1;
-            return 0;
-        });
-        console.log("Sorted Text Nodes");
+        // Sort text nodes to apply orientation
+        if (msg.orientation === 'rows') {
+            textNodes.sort(function (a, b) {
+                if (a.y > b.y)
+                    return 1;
+                if (a.y < b.y)
+                    return -1;
+                if (a.x > b.x)
+                    return 1;
+                if (a.x < b.x)
+                    return -1;
+                return 0;
+            });
+        }
+        else {
+            textNodes.sort(function (a, b) {
+                if (a.x > b.x)
+                    return 1;
+                if (a.x < b.x)
+                    return -1;
+                if (a.y > b.y)
+                    return 1;
+                if (a.y < b.y)
+                    return -1;
+                return 0;
+            });
+        }
         // Update characters
         for (var i = 0; i < msg.sequence.length; i++) {
             textNodes[i].characters = msg.sequence[i];
         }
-        console.log("Updated Characters");
         figma.closePlugin();
     }
     if (msg.type === 'selectMissingFontNodes') {
         figma.currentPage.selection = missingFontNodes;
         figma.notify("Selected Text layers with missing fonts");
+        figma.closePlugin();
+    }
+    if (msg.type === 'cancel') {
         figma.closePlugin();
     }
 });

@@ -18,12 +18,17 @@
     <div id="mainBody" class="p-xxsmall">
 
         <!-- Text Pattern -->   
-        <div class="input p-xxsmall">
-            <input id="textPattern" type="input" class="row input__field" placeholder="Text Pattern">
+        <div class="flex row p-xxsmall">
+            <div class="input flex-grow mr-xxsmall">
+                <input id="textPattern" type="input" class="row input__field" placeholder="Text Pattern">
+            </div>
+            <div id="orientationRowsButton" class="icon-button icon-button--selected">
+                <div class="icon icon--orientation-rows"></div>
+            </div>
+            <div id="orientationColumnsButton" class="icon-button">
+                <div class="icon icon--orientation-columns"></div>
+            </div>
         </div>
-        <!-- <div class="type descriptor p-xxsmall">
-            Use <strong>{{n}}</strong> to identify the number or range to use to create the sequence. For example <strong>Person {{1}}</strong> or <strong>Faders {{1-12}}</strong>.
-        </div> -->
 
         <!-- Preview -->
         <div class="section-title">Preview</div>

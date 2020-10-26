@@ -15,5 +15,7 @@ Here are some examples of what a range of text layers would contain for a given 
 | 1/2        | 1/2, 3/4, 5/6, 7/8, etc.                                  |
 | 1 & 2      | 1 & 2, 3 & 4, 5 & 6, 7 & 8                                |
 
+Figma does not guarantee the ordering or layers in a selection, so you can choose how the plugin applies the sequence across the selcted items: in rows or in columns.
+
 ## Limitations
 It does not support sequential prefixes. You’ll get odd results if you try to use labels that begin with numbers as the plugin thinks the following text is a range separator. I may change the way the sequential elements are identified to be less automagical, and more explicit.

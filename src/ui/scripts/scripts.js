@@ -3,6 +3,8 @@ const mainBody                      = document.querySelector('#mainBody');
 const updateTextButton              = document.querySelector('#updateText');
 const cancelButton                  = document.querySelector('#cancel');
 const textPatternInput              = document.querySelector('#textPattern');
+const orientationRowsButton         = document.querySelector('#orientationRowsButton');
+const orientationColumnsButton      = document.querySelector('#orientationColumnsButton');
 const preview                       = document.querySelector('#preview');
 const missingFontsBody              = document.querySelector('#missingFontsBody');
 const selectMissingFontNodesButton  = document.querySelector('#selectMissingFontNodes');
@@ -10,6 +12,7 @@ const selectMissingFontNodesButton  = document.querySelector('#selectMissingFont
 var textSequence = [];
 var selectionCount = 0;
 var missingFontsCount = 0;
+var sequenceOrientation = 'rows';
 
 // Focus input field
 textPatternInput.focus();
@@ -25,9 +28,23 @@ window.onmessage = async event => {
 
 //event listeners
 textPatternInput.oninput = () => { validation(); }
+orientationRowsButton.onclick = () => { setOrientationRows(); }
+orientationColumnsButton.onclick = () => { setOrientationColumns(); }
 updateTextButton.onclick = () => { updateText(); }
 selectMissingFontNodesButton.onclick = () => { selectMissingFontNodes(); }
 cancelButton.onclick = () => { cancel(); }
+
+// Sequence Orientation
+function setOrientationRows() {
+    orientationRowsButton.classList.add('icon-button--selected');
+    orientationColumnsButton.classList.remove('icon-button--selected');
+    sequenceOrientation = 'rows';
+}
+function setOrientationColumns() {
+    orientationRowsButton.classList.remove('icon-button--selected');
+    orientationColumnsButton.classList.add('icon-button--selected');
+    sequenceOrientation = 'columns';
+}
 
 //form validation
 function validation() {
@@ -143,9 +160,11 @@ function createSequence() {
 
 // Comms to plugin
 function updateText() {
+    console.log("UPDATE");
     parent.postMessage({ pluginMessage: { 
         'type': 'update-text', 
-        'sequence': textSequence
+        'sequence': textSequence,
+        'orientation': sequenceOrientation
     } }, '*');
 }
 
@@ -154,5 +173,6 @@ function selectMissingFontNodes() {
 }
 
 function cancel() {
+    console.log("CANCEL");
     parent.postMessage({ pluginMessage: { 'type': 'cancel' } }, '*');
 }
