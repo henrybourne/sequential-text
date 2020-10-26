@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="./tmp/figma-plugin-ds.css"> <!-- Figma Plugin DS Styles -->
+        <link rel="stylesheet" href="./tmp/styles.css"> <!-- Your Styles -->
+    </head>
+    <body>
+
+    <div id="missingFontsBody" class="flex column align-items-center justify-content-center p-small">
+        <div class="type">There are missing fonts that are preventing text from being changed.</div>
+        <button id="selectMissingFontNodes" class="mt-xsmall button button--primary">Select layers with missing fonts</button> 
+    </div>    
+
+    <div id="mainBody" class="p-xxsmall">
+
+        <!-- Text Pattern -->   
+        <div class="input p-xxsmall">
+            <input id="textPattern" type="input" class="row input__field" placeholder="Text Pattern">
+        </div>
+        <!-- <div class="type descriptor p-xxsmall">
+            Use <strong>{{n}}</strong> to identify the number or range to use to create the sequence. For example <strong>Person {{1}}</strong> or <strong>Faders {{1-12}}</strong>.
+        </div> -->
+
+        <!-- Preview -->
+        <div class="section-title">Preview</div>
+        <div id="preview" class="type p-xxsmall"></div>
+
+
+        <!-- Buttons -->
+        <div class="flex p-xxsmall justify-content-end">
+            <button id="cancel" class='button button--secondary mr-xxsmall'>Cancel</button>
+            <button id="updateText" class='button button--primary'>Update Text</button> 
+        </div>
+        
+    </div>
+
+    <script src="./tmp/scripts.js"></script>
+    </body>
+</html>
