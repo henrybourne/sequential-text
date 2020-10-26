@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 // This shows the HTML page in "index.html".
 figma.showUI(__html__, { width: 300, height: 300 });
-var textNodes = [];
-var missingFontNodes = [];
-var fonts = [];
+let textNodes = [];
+let missingFontNodes = [];
+let fonts = [];
 updateTextNodesFromSelection();
 figma.on('selectionchange', () => {
     updateTextNodesFromSelection();
@@ -19,7 +19,9 @@ figma.on('selectionchange', () => {
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     if (msg.type === 'update-text') {
         // Load fonts
-        yield loadFonts();
+        let results = yield Promise.all(fonts.map((font) => {
+            return figma.loadFontAsync(font);
+        }));
         // Sort text nodes
         textNodes.sort(function (a, b) {
             if (a.y > b.y)
@@ -32,10 +34,12 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
                 return -1;
             return 0;
         });
+        console.log("Sorted Text Nodes");
         // Update characters
         for (var i = 0; i < msg.sequence.length; i++) {
             textNodes[i].characters = msg.sequence[i];
         }
+        console.log("Updated Characters");
         figma.closePlugin();
     }
     if (msg.type === 'selectMissingFontNodes') {
